@@ -3,9 +3,7 @@
 
 using namespace std;
 
-void shutdownSignalHandler(int sig) {
-  ros::shutdown();
-}
+void shutdownSignalHandler(int sig) { ros::shutdown(); }
 
 int main(int argc, char** argv) {
   signal(SIGINT, shutdownSignalHandler);

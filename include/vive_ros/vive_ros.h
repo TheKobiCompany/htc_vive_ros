@@ -35,7 +35,7 @@ class VIVEnode {
 #endif
 
  private:
-  double rate_;
+  double                                rate_;
   std::vector<double>                   world_offset_;
   double                                world_yaw_;
   tf::TransformBroadcaster              tf_broadcaster_;

@@ -20,14 +20,19 @@ std::string GetTrackedDeviceString(vr::IVRSystem* pHmd, vr::TrackedDeviceIndex_t
 }
 
 VIVEnode::VIVEnode()
-    : nh_(), tf_broadcaster_(), tf_listener_(), vr_(), world_offset_({0, 0, 0}), world_yaw_(0), rate_(90.0) {
-
+    : nh_(),
+      tf_broadcaster_(),
+      tf_listener_(),
+      vr_(),
+      world_offset_({0, 0, 0}),
+      world_yaw_(0),
+      rate_(90.0) {
   nh_.param<std::vector<double>>("vive/world_offset", world_offset_, world_offset_);
   nh_.param<double>("vive/world_yaw", world_yaw_, world_yaw_);
 
   nh_.param<double>("vive/rate", rate_, rate_);
 
-  if(world_offset_.size() < 3) {
+  if (world_offset_.size() < 3) {
     world_offset_ = {0., 0., 0.};
   }
 
@@ -105,8 +110,8 @@ void VIVEnode::set_feedback(sensor_msgs::JoyFeedbackConstPtr msg) {
 
 void VIVEnode::Run() {
   ros::Rate loop_rate(rate_);
-  double tf_matrix[3][4];
-  int    run_hz_count = 0;
+  double    tf_matrix[3][4];
+  int       run_hz_count = 0;
 
   while (ros::ok()) {
     // do stuff

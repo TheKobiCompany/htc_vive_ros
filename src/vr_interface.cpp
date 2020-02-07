@@ -65,8 +65,8 @@ bool VRInterface::Init() {
 
   info_("VR_Init Success.");
   //~ strDriver_ = GetTrackedDeviceString( pHMD_, vr::k_unTrackedDeviceIndex_Hmd,
-  //vr::Prop_TrackingSystemName_String ); ~ strDisplay_ = GetTrackedDeviceString( pHMD_,
-  //vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_SerialNumber_String ); ~ info_("Device: " + strDriver_
+  // vr::Prop_TrackingSystemName_String ); ~ strDisplay_ = GetTrackedDeviceString( pHMD_,
+  // vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_SerialNumber_String ); ~ info_("Device: " + strDriver_
   //+ ", " + strDisplay_);
 
   //~ pHMD_->ResetSeatedZeroPose();
@@ -90,10 +90,11 @@ void VRInterface::Update() {
                                            max_devices_);
 
     //~ for (vr::TrackedDeviceIndex_t device_index = vr::k_unTrackedDeviceIndex_Hmd; device_index <
-    //max_devices_; ++device_index) ~ { ~ if (device_poses_[device_index].bDeviceIsConnected &&
-    //device_poses_[device_index].bPoseIsValid) ~ { ~ info_("device[" + std::to_string(device_index)
+    // max_devices_; ++device_index) ~ { ~ if (device_poses_[device_index].bDeviceIsConnected &&
+    // device_poses_[device_index].bPoseIsValid) ~ { ~ info_("device[" +
+    // std::to_string(device_index)
     //+ "]: " + std::to_string(pHMD_->GetTrackedDeviceClass(device_index)) + " " +
-    //std::to_string(device_poses_[device_index].eTrackingResult));
+    // std::to_string(device_poses_[device_index].eTrackingResult));
     //~ }
     //~ }
   }

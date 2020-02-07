@@ -25,43 +25,11 @@ find_library(OPENVR_LIBRARIES
 )
 set(OPENVR_INCLUDE_DIR ${OPENVR}/headers ${OPENVR}/samples)
 
-## find SDL
-set(SDL_REQUIRED_LIBRARIES SDL2)
-foreach(lib ${SDL_REQUIRED_LIBRARIES})
-  find_library(${lib}_LIBRARY
-    NAMES
-      ${lib}
-    PATHS
-      ${THIRDPARTY_DIR}/sdl2-2.0.3/bin
-    PATH_SUFFIXES
-      linux64
-    )
-  list(APPEND SDL2_LIBRARIES ${${lib}_LIBRARY})
-endforeach()
-set(SDL2_INCLUDE_DIR ${THIRDPARTY_DIR}/sdl2-2.0.3/include)
-
 ## common src from openvr sample
 file(GLOB SHARED_SRC_FILES
   ${SHARED_SRC_DIR}/*.cpp
   ${SHARED_SRC_DIR}/*.h
 )
-
-## find opengl (OpenGL specific)
-find_package(OpenGL REQUIRED)
-find_package(GLEW 1.11 REQUIRED)
-
-## find vulkan (vulkan specific)
-find_library(VULKAN_LIBRARY
-  NAMES
-    vulkan-1
-    vulkan
-  PATHS
-    ${THIRDPARTY_DIR}/vulkan-1.0.49.0/lib
-  PATH_SUFFIXES
-    linux64
-  NO_DEFAULT_PATH
-)
-set(VULKAN_INCLUDE_DIR ${THIRDPARTY_DIR}/vulkan-1.0.49.0/include)
 
 ## add include path
 include_directories(
@@ -75,23 +43,32 @@ include_directories(
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  tf
-  std_srvs
   geometry_msgs
-  cv_bridge
-  image_transport
+  nav_msgs
+  sensor_msgs
+  std_srvs
+  tf
 )
 
 set(CMAKE_BUILD_TYPE "Release")
 
-catkin_package()
+catkin_package(
+  INCLUDE_DIRS include
+  CATKIN_DEPENDS
+    roscpp
+    geometry_msgs
+    nav_msgs
+    sensor_msgs
+    std_srvs
+    tf
+  DEPENDS
+)
 
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
 )
 
-# VIVE node:
 add_executable(vive_node
   ${SHARED_SRC_FILES}
   src/vive_node.cpp
@@ -99,19 +76,14 @@ add_executable(vive_node
   src/vr_interface.cpp
 )
 
-## link all
 target_link_libraries(vive_node
   ${catkin_LIBRARIES}
-  ${OPENGL_LIBRARIES} ## (OpenGL specific)
-  ${GLEW_LIBRARIES} ## (OpenGL specific)
-  ${VULKAN_LIBRARY} ## (Vulkan specific)
-  ${SDL2_LIBRARIES}
   ${OPENVR_LIBRARIES}
   ${CMAKE_DL_LIBS}
   ${EXTRA_LIBS}
 )
 
-install(TARGETS vive_node_node
+install(TARGETS vive_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
